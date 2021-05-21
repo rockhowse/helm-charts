@@ -13,7 +13,7 @@ Please refer to Helm's [documentation](https://helm.sh/docs/) to get started.
 Once Helm is set up properly, add the repo as follows:
 
 ```console
-helm repo add grafana https://platform9-community.github.io/helm-charts
+helm repo add platform9-community https://platform9-community.github.io/helm-charts
 ```
 
 You can then run `helm search repo platform9-community` to see the charts.
