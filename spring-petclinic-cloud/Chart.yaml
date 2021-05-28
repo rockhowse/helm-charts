@@ -57,6 +57,6 @@ maintainers:
 - name: David Dieruf
   email: ddieruf@platform9.com
 
-icon: https://media-exp1.licdn.com/dms/image/C560BAQEK-9hzDrOY1g/company-logo_200_200/0/1563392334390?e=1629936000&v=beta&t=35bqzRCQH-UlVEuMNnKrHSaY1H8HX7h4unZHo0xLe0E
+icon: https://github.com/platform9-community/helm-charts/spring-petclinic-cloud/spring-cloud.png
 
 kubeVersion: ">= 1.18.10 <= 1.20.5"
