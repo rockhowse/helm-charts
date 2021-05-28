@@ -1,0 +1,100 @@
+# Default values for spring-petclinic-cloud.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+global:
+  storageClass: "hostpath-provisioner"
+
+#Dependencies
+vets-db-mysql:
+  auth:
+    database: "service_instance_db"
+  image:
+    tag: 8.0.25
+  fullnameOverride: "vets-db-mysql"
+
+visits-db-mysql:
+  auth:
+    database: "service_instance_db"
+  image:
+    tag: 8.0.25
+  fullnameOverride: "visits-db-mysql"
+
+customers-db-mysql:
+  auth:
+    database: "service_instance_db"
+  image:
+    tag: 8.0.25
+  fullnameOverride: "customers-db-mysql"
+
+grafana:
+  sidecar:
+    dashboards:
+      enabled: true
+    datasources:
+      enabled: true
+  rbac:
+    namespaced: true
+  fullnameOverride: "grafana"
+  persistence:
+    enabled : true
+    storageClassName: "hostpath-provisioner"
+
+prometheus:
+  server:
+    fullnameOverride : "prometheus-server"
+    persistentVolume:
+      enabled: true
+      storageClass: "hostpath-provisioner"
+  kubeStateMetrics:
+    enabled: false
+  nodeExporter:
+    enabled: false
+  alertmanager:
+    enabled: false
+  pushgateway:
+    enabled: false
+
+#Values
+storage:
+  rbac:
+    enabled: false
+  provisioner:
+    enabled: true
+  deployOperator: true
+  createNamespace: true
+  addStorageClass: true
+  image: quay.io/kubevirt/hostpath-provisioner
+  tag: latest
+  operator:
+    image: quay.io/kubevirt/hostpath-provisioner-operator
+    tag: latest
+
+adminServer:
+  image: platform9community/admin-server
+  tag: latest
+
+apiGateway:
+  image: platform9community/api-gateway
+  tag: latest
+
+visitsService:
+  image: platform9community/visits-service
+  tag: latest
+  dbInstanceName: visits-db-mysql
+  dbName: service_instance_db
+  zipkinServiceName: visits-db
+
+vetsService:
+  image: platform9community/vets-service
+  tag: latest
+  dbInstanceName: vets-db-mysql
+  dbName: service_instance_db
+  zipkinServiceName: vets-db
+
+customersService:
+  image: platform9community/customers-service
+  tag: latest
+  dbInstanceName: customers-db-mysql
+  dbName: service_instance_db
+  zipkinServiceName: customers-db
