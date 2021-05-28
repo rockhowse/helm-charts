@@ -5,7 +5,7 @@
 ## Get Repo Info
 
 ```console
-helm repo add Platform9-Community https://platofrm9-community.github.io/helm-charts
+helm repo add Platform9-Community https://platform9-community.github.io/helm-charts
 helm repo update
 ```
 
