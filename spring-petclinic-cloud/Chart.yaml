@@ -30,7 +30,7 @@ keywords:
 - kubernetes
 - platform9
 
-home: https://github.com/platform9-community/helm-charts/spring-petclinic-cloud
+home: https://platform9-community.github.io/helm-charts/spring-petclinic-cloud
 
 sources:
 - https://github.com/platform9-community/spring-petclinic-cloud
