@@ -3,7 +3,7 @@ entries:
   Spring Pet Clinic CLoud:
   - apiVersion: v2
     appVersion: 2.3.1
-    created: "2021-05-28T15:38:43.2516251-04:00"
+    created: "2021-05-28T15:41:44.6487191-04:00"
     dependencies:
     - name: prometheus
       repository: '@prometheus-community'
@@ -24,9 +24,9 @@ entries:
       repository: '@bitnami'
       version: 8.5.9
     description: Spring pet clinic for Kubernetes on Platform9
-    digest: f3b5923d8c08e346d0b5d6be0e724e809349519728e767deac93c02eb3f40124
+    digest: a21df6d4b71edd53d1c4531efd2e662f59e6b3de94f77f62ef65c38417f78634
     home: https://github.com/platform9-community/helm-charts/spring-petclinic-cloud
-    icon: https://github.com/platform9-community/helm-charts/spring-petclinic-cloud/spring-cloud.png
+    icon: https://platform9-community.github.io/helm-charts/spring-petclinic-cloud/spring-cloud.png
     keywords:
     - spring
     - java
@@ -45,7 +45,7 @@ entries:
   spring-petclinic-cloud:
   - apiVersion: v2
     appVersion: 2.3.1
-    created: "2021-05-28T15:38:43.2676266-04:00"
+    created: "2021-05-28T15:41:44.6597194-04:00"
     dependencies:
     - name: prometheus
       repository: '@prometheus-community'
@@ -84,4 +84,4 @@ entries:
     urls:
     - https://platform9-community.github.io/helm-charts/spring-petclinic-cloud-0.1.0.tgz
     version: 0.1.0
-generated: "2021-05-28T15:38:43.2366265-04:00"
+generated: "2021-05-28T15:41:44.636719-04:00"
