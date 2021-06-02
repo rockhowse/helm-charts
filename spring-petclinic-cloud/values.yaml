@@ -2,11 +2,11 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-global:
-  storageClass: "hostpath-provisioner"
-
 #Dependencies
 vets-db-mysql:
+  primary:
+    persistence:
+      enabled: false
   auth:
     database: "service_instance_db"
   image:
@@ -14,6 +14,9 @@ vets-db-mysql:
   fullnameOverride: "vets-db-mysql"
 
 visits-db-mysql:
+  primary:
+    persistence:
+      enabled: false
   auth:
     database: "service_instance_db"
   image:
@@ -21,6 +24,9 @@ visits-db-mysql:
   fullnameOverride: "visits-db-mysql"
 
 customers-db-mysql:
+  primary:
+    persistence:
+      enabled: false
   auth:
     database: "service_instance_db"
   image:
@@ -37,15 +43,19 @@ grafana:
     namespaced: true
   fullnameOverride: "grafana"
   persistence:
-    enabled : true
-    storageClassName: "hostpath-provisioner"
+    enabled : false
+  service:
+    type: NodePort
+    nodePort: 30300
+  env:
+    GF_SECURITY_ADMIN_USER: admin
+    GF_SECURITY_ADMIN_PASSWORD: admin
 
 prometheus:
   server:
     fullnameOverride : "prometheus-server"
     persistentVolume:
-      enabled: true
-      storageClass: "hostpath-provisioner"
+      enabled: false
   kubeStateMetrics:
     enabled: false
   nodeExporter:
@@ -55,21 +65,60 @@ prometheus:
   pushgateway:
     enabled: false
 
-#Values
-storage:
-  rbac:
-    enabled: false
-  provisioner:
-    enabled: true
-  deployOperator: true
-  createNamespace: true
-  addStorageClass: true
-  image: quay.io/kubevirt/hostpath-provisioner
-  tag: latest
-  operator:
-    image: quay.io/kubevirt/hostpath-provisioner-operator
-    tag: latest
+fluent-bit:
+  fullnameOverride: fluentbit
+  config:
+    customParsers: ""
 
+    filters: ""
+
+    service: |
+      [SERVICE]
+        Flush 1
+        Daemon Off
+        Log_Level info
+  #      Parsers_File parsers.conf
+  #      Parsers_File custom_parsers.conf
+  #      HTTP_Server On
+  #      HTTP_Listen 0.0.0.0
+  #      HTTP_Port {{ .Values.service.port }}
+
+    inputs: |
+      [INPUT]
+        Name stdin
+  #      Tag spring.petclinic
+  
+    outputs: |
+      [OUTPUT]
+        Name stdout
+
+      [OUTPUT]
+        Name es
+        Host http://elasticsearch.spring-petclinic.svc.cluster.local:9200
+        Logstash_Format On
+        Retry_Limit False
+
+elasticsearch:
+  replicas: 1
+  fullnameOverride: elasticsearch
+  persistence:
+    enabled: false
+
+kibana:
+  fullnameOverride: kibana
+  service:
+    type: NodePort
+    port: 5601
+    nodePort: 30056
+  elasticsearchHosts: http://elasticsearch.spring-petclinic.svc.cluster.local:9200
+
+zipkin:
+  fullnameOverride: zipkin
+  collector:
+    service:
+      type: NodePort
+
+#Values
 adminServer:
   image: platform9community/admin-server
   tag: latest

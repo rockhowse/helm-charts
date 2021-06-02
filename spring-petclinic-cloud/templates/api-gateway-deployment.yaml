@@ -4,7 +4,7 @@ kind: Service
 metadata:
   labels:
     app: api-gateway
-  name: api-gateway
+  name: api-gateway-ui
 spec:
   ports:
   - name: "80"
@@ -14,6 +14,20 @@ spec:
   selector:
     app: api-gateway
   type: NodePort
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: api-gateway
+  name: api-gateway
+spec:
+  ports:
+  - name: "8080"
+    port: 8080
+    targetPort: 8080
+  selector:
+    app: api-gateway
 ---
 apiVersion: apps/v1
 kind: Deployment

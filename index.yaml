@@ -3,7 +3,7 @@ entries:
   spring-petclinic-cloud:
   - apiVersion: v2
     appVersion: 2.3.1
-    created: "2021-05-28T15:59:22.886506-04:00"
+    created: "2021-06-02T14:31:39.7271282-04:00"
     dependencies:
     - name: prometheus
       repository: '@prometheus-community'
@@ -23,8 +23,20 @@ entries:
       name: mysql
       repository: '@bitnami'
       version: 8.5.9
+    - name: fluent-bit
+      repository: '@fluent'
+      version: 0.15.13
+    - name: elasticsearch
+      repository: '@elastic'
+      version: 7.13.0
+    - name: kibana
+      repository: '@elastic'
+      version: 7.13.0
+    - name: zipkin
+      repository: '@carlosjgp'
+      version: 0.2.0
     description: Spring pet clinic for Kubernetes on Platform9
-    digest: f894f7ecf6000f230e1383370c7cbeec0effeae9ab48650557f1f31adf36fd62
+    digest: 8588769050a25d9c2c2006476d95db3bf913ef6d8fb911f0f910a2323658fd15
     home: https://platform9-community.github.io/helm-charts/spring-petclinic-cloud
     icon: https://platform9-community.github.io/helm-charts/spring-petclinic-cloud/spring-cloud.png
     keywords:
@@ -44,4 +56,4 @@ entries:
     urls:
     - https://platform9-community.github.io/helm-charts/spring-petclinic-cloud-0.1.0.tgz
     version: 0.1.0
-generated: "2021-05-28T15:59:22.8685035-04:00"
+generated: "2021-06-02T14:31:39.711107-04:00"

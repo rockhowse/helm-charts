@@ -17,11 +17,6 @@ data:
         mime-types: application/json,text/css,application/javascript
         min-response-size: 2048
 
-    wavefront:
-      application:
-        name: spring-petclinic-k8s
-      freemium-account: true
-
     # Logging
     logging.level.org.springframework: INFO
 
@@ -29,6 +24,7 @@ data:
     management:
       endpoint:
         health:
+          show-details: always
           probes:
             enabled: true
       health:
@@ -50,19 +46,20 @@ data:
         export:
           prometheus:
             enabled: true
-          wavefront:
-            enabled: true
 
     customers-service-id: http://customers-service.spring-petclinic.svc.cluster.local:8080
     visits-service-id: http://vists-service.spring-petclinic.svc.cluster.local:8080
 
     spring:
+      boot:
+        admin:
+          client:
+            url: http://admin-server.spring-petclinic.svc.cluster.local:8080
       datasource:
         schema: classpath*:db/mysql/schema.sql
         data: classpath*:db/mysql/data.sql
         platform: mysql
         initialization-mode: always
-
       jpa:
         show-sql: true
         hibernate:
@@ -78,6 +75,8 @@ data:
           override-none: true
       messages:
         basename: messages/messages
+      zipkin:
+        base-url: http://zipkin-collector.spring-petclinic.svc.cluster.local:9411
       cloud:
         kubernetes:
           discovery:
@@ -116,4 +115,3 @@ data:
       cache:
         ttl: 60
         heap-size: 101
-

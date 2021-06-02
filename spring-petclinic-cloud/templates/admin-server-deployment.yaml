@@ -1,4 +1,36 @@
 ---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: admin-server
+  name: admin-server-ui
+spec:
+  ports:
+  - name: "80"
+    port: 80
+    targetPort: 8080
+    nodePort: 30909
+  selector:
+    app: admin-server
+  type: NodePort
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: admin-server
+  name: admin-server
+spec:
+  ports:
+  - name: "8080"
+    port: 8080
+    targetPort: 8080
+    protocol: TCP
+  selector:
+    app: admin-server
+  type: ClusterIP
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:

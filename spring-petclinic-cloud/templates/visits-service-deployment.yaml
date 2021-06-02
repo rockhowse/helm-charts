@@ -12,8 +12,6 @@ spec:
     targetPort: 8080
   selector:
     app: visits-service
-status:
-  loadBalancer: {}
 ---
 apiVersion: apps/v1
 kind: Deployment

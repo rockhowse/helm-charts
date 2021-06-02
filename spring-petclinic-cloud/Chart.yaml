@@ -54,6 +54,18 @@ dependencies: #helm dependency update
   version: 8.5.9
   repository: "@bitnami"
   alias: customers-db-mysql
+- name: fluent-bit
+  version: 0.15.13
+  repository: "@fluent"
+- name: elasticsearch
+  version: 7.13.0
+  repository: "@elastic"
+- name: kibana
+  version: 7.13.0
+  repository: "@elastic"
+- name: zipkin
+  version: 0.2.0
+  repository: "@carlosjgp"
 
 maintainers:
 - name: David Dieruf
