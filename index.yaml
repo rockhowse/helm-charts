@@ -3,40 +3,44 @@ entries:
   spring-petclinic-cloud:
   - apiVersion: v2
     appVersion: 2.3.1
-    created: "2021-06-02T14:31:39.7271282-04:00"
+    created: "2021-06-17T13:00:07.8522928-04:00"
     dependencies:
-    - name: prometheus
+    - name: mysql
+      repository: '@bitnami'
+      version: 8.5.9
+    - condition: somechart.enabled
+      name: prometheus
       repository: '@prometheus-community'
+      tags:
+      - include-observability
       version: 14.1.0
     - name: grafana
       repository: '@grafana'
+      tags:
+      - include-observability
       version: 6.9.0
-    - alias: vets-db-mysql
-      name: mysql
-      repository: '@bitnami'
-      version: 8.5.9
-    - alias: visits-db-mysql
-      name: mysql
-      repository: '@bitnami'
-      version: 8.5.9
-    - alias: customers-db-mysql
-      name: mysql
-      repository: '@bitnami'
-      version: 8.5.9
+    - name: zipkin
+      repository: '@carlosjgp'
+      tags:
+      - include-request-tracing
+      version: 0.2.0
     - name: fluent-bit
       repository: '@fluent'
+      tags:
+      - include-log-streaming
       version: 0.15.13
     - name: elasticsearch
       repository: '@elastic'
+      tags:
+      - include-log-streaming
       version: 7.13.0
     - name: kibana
       repository: '@elastic'
+      tags:
+      - include-log-streaming
       version: 7.13.0
-    - name: zipkin
-      repository: '@carlosjgp'
-      version: 0.2.0
     description: Spring pet clinic for Kubernetes on Platform9
-    digest: 8588769050a25d9c2c2006476d95db3bf913ef6d8fb911f0f910a2323658fd15
+    digest: 9ad4fff110a712318706e525686d7c0a9a50c65ad168dea919bb4688b7c4f087
     home: https://platform9-community.github.io/helm-charts/spring-petclinic-cloud
     icon: https://platform9-community.github.io/helm-charts/spring-petclinic-cloud/spring-cloud.png
     keywords:
@@ -56,4 +60,4 @@ entries:
     urls:
     - https://platform9-community.github.io/helm-charts/spring-petclinic-cloud-0.1.0.tgz
     version: 0.1.0
-generated: "2021-06-02T14:31:39.711107-04:00"
+generated: "2021-06-17T13:00:07.839293-04:00"

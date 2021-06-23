@@ -36,7 +36,7 @@ spec:
         app: customers-service
     spec:
       containers:
-      - image: {{ .Values.customersService.image }}:{{ .Values.customersService.tag }}
+      - image: platform9community/customers-service:latest
         name: customers-service
         imagePullPolicy: Always
         livenessProbe:
@@ -54,23 +54,17 @@ spec:
           preStop:
             exec:
               command: ["sh", "-c", "sleep 10"]
-        resources:
-          limits:
-            memory: 1Gi
-          requests:
-            cpu: 2000m
-            memory: 1Gi
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: kubernetes
         - name: SPRING_DATASOURCE_URL
-          value: jdbc:mysql://{{ .Values.customersService.dbInstanceName }}.{{ .Release.Namespace }}.svc.cluster.local:3306/{{ .Values.customersService.dbName }}?queryInterceptors=brave.mysql8.TracingQueryInterceptor&exceptionInterceptors=brave.mysql8.TracingExceptionInterceptor&zipkinServiceName={{ .Values.customersService.zipkinServiceName }}
+          value: jdbc:mysql://customers-db-mysql.spring-petclinic.svc.cluster.local:3306/service_instance_db?queryInterceptors=brave.mysql8.TracingQueryInterceptor&exceptionInterceptors=brave.mysql8.TracingExceptionInterceptor&zipkinServiceName=customers-db
         - name: SPRING_DATASOURCE_USERNAME
           value: root
         - name: SPRING_DATASOURCE_PASSWORD
           valueFrom:
              secretKeyRef:
-               name: {{ .Values.customersService.dbInstanceName }}
+               name: customers-db-mysql
                key: mysql-root-password
         ports:
         - containerPort: 8080

@@ -4,6 +4,7 @@ metadata:
   name: spring-petclinic-dashboard
   labels:
      grafana_dashboard: "1"
+  namespace: spring-petclinic
 data:
   k8s-dashboard.json: >
     {

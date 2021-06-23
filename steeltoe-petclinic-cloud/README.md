@@ -4,7 +4,7 @@
 
 ## Get Repo Info
 
-```bash
+```console
 helm repo add Platform9-Community https://platform9-community.github.io/helm-charts
 helm repo update
 ```
@@ -15,9 +15,7 @@ _See [helm repo](https://helm.sh/docs/helm/helm_repo/) for command documentation
 
 To install the chart with the release name `spring-petclinic-cloud` to namespace `spring-petclinic`:
 
-(be patient while everything comes up)
-
-```bash
+```console
 helm install spring-petclinic-cloud Platform9-Community/spring-petclinic-cloud --namespace spring-petclinic --create-namespace
 ```
 
@@ -25,11 +23,8 @@ helm install spring-petclinic-cloud Platform9-Community/spring-petclinic-cloud -
 
 To uninstall/delete the `spring-petclinic-cloud` deployment from namespace `spring-petclinic`:
 
-```bash
+```console
 helm uninstall spring-petclinic-cloud --namespace spring-petclinic
-
-#remove the namespace
-kubectl delete namespace spring-petclinic
 ```
 
 The command removes all the Kubernetes components associated with the chart and deletes the release.
@@ -38,16 +33,21 @@ The command removes all the Kubernetes components associated with the chart and 
 
 The Spring pet clinic application is a well known example showing off the power of Spring. Over the years it's been refectored into microservices and then refactored for Kubernetes. That is what this chart deploys. To get deep with the application have a look at [our fork](https://github.com/platform9-community/spring-petclinc-cloud).
 
-## Access services
+## Exposed services
 
-To access any of the below services you'll need to get the cluster's pubic IP. Here are a few suggestions:
+To access any of the below services you'll either need to get the cluster's EXTERNAL-IP
 
 ```bash
 kubectl get svc -n spring-petclinic api-gateway
+```
+
+Or if you using a cluser running on a local network, use a node's INTERNAL_IP
+
+```bash
 kubectl get node -o wide
 ```
 
-## Pet clinic UI
+### Pet clinic UI
 
 The UI is served by the api gateway, which has a `NodePort` service attached. To access the application visit `http://<IP>:30808`.
 
@@ -59,39 +59,19 @@ There is an instance of spring admin running where you can see each service's es
 
 [![Pet Clinic Home](<https://github.com/Platform9-Community/spring-petclinic-cloud/raw/master/docs/spring-admin-wallboard.png>]
 
-## Running locally
-
-Please note if you are running this chart on a local cluster, it will need a higher amount of compute than normal. This was tested using minikube with the following start command. It took everything a few minutes for the deployments to completely finish and go "green". None of the object deployed make resource claims.
-
-```bash
-minikube start --cpus=4 --memory='5000MB'
-```
-
-## Running in public cloud
-
-Keep in kind the ports used by each serivcee are not common numbers (like 80 or 443). You will need to open these ports to the nodes.
-
-## Optional add-ons
-
-### Observability
-
-If you would like to include observability set the `include-observability: true` flag in the chart values.
+### Metrics with Grafana
 
 The chart deploys Grafana with all it's default settings. It has an accompanying `NodePort` service, which can be accessed at `http://<IP>:30300`. Use the default creds of admin:admin. There is a single dashboard loaded that has Prometheus as a data source. Once logged in to Grafana go to `Dashboards > Manage > Spring Petclinic Metrics`.
 
 [![Pet Clinic Home](<https://github.com/Platform9-Community/spring-petclinic-cloud/raw/master/docs/grafana-dash.png>]
 
-### Log Streaming
+### Logs with Kibana
 
-If you would like to include log streaming set the `include-log-streaming: true` flag in the chart values.
+All of the services are writing logs to stdout, which a FluentBit daemon is piping to Elasticstore. To query the logs visit the Kibana instance at `http://<IP>:30056`.
 
-The chart will deploy a FluentBit daemon which forwards logs to Elasticstore. To query the logs visit the Kibana instance at `http://<IP>:30056`.
+### Request tracing with Zipkin
 
-#### Request tracing with Zipkin
-
-If you would like to include log streaming set the `include-request-tracing: true` flag in the chart values.
-
-All services are emitting traces to a Zipkin instance were you can visualize all the requests. This helm chart has no fixed NodePort number. To access the collector UI get the auto-assigned forwarded port by running the below command.
+All services are emitting reuqest traces to a Zipkin instance were you can visualize all the requests. This helm chart has no built in NodePort number. To access the collector UI get the auto-assigned forwarded port by running the below command.
 
 ```bash
 kubectl -n spring-petclinic get svc zipkin-collector

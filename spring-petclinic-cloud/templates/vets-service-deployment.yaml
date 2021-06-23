@@ -35,7 +35,7 @@ spec:
         app: vets-service
     spec:
       containers:
-      - image: {{ .Values.vetsService.image }}:{{ .Values.vetsService.tag }}
+      - image: platform9community/vets-service:latest
         name: vets-service
         imagePullPolicy: Always
         livenessProbe:
@@ -53,23 +53,17 @@ spec:
           preStop:
             exec:
               command: ["sh", "-c", "sleep 10"]
-        resources:
-          limits:
-            memory: 1Gi
-          requests:
-            cpu: 2000m
-            memory: 1Gi
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: kubernetes
         - name: SPRING_DATASOURCE_URL
-          value: jdbc:mysql://{{ .Values.vetsService.dbInstanceName }}.{{ .Release.Namespace }}.svc.cluster.local:3306/{{ .Values.vetsService.dbName }}?queryInterceptors=brave.mysql8.TracingQueryInterceptor&exceptionInterceptors=brave.mysql8.TracingExceptionInterceptor&zipkinServiceName={{ .Values.vetsService.zipkinServiceName }}
+          value: jdbc:mysql://vets-db-mysql.spring-petclinic.svc.cluster.local:3306/service_instance_db?queryInterceptors=brave.mysql8.TracingQueryInterceptor&exceptionInterceptors=brave.mysql8.TracingExceptionInterceptor&zipkinServiceName=vets-db
         - name: SPRING_DATASOURCE_USERNAME
           value: root
         - name: SPRING_DATASOURCE_PASSWORD
           valueFrom:
              secretKeyRef:
-               name: {{ .Values.vetsService.dbInstanceName }}
+               name: vets-db-mysql
                key: mysql-root-password
         ports:
         - containerPort: 8080

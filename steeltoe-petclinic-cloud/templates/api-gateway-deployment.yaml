@@ -50,7 +50,7 @@ spec:
         app: api-gateway
     spec:
       containers:
-      - image: platform9community/api-gateway:latest
+      - image: {{ .Values.apiGateway.image }}:{{ .Values.apiGateway.tag }}
         name: api-gateway
         imagePullPolicy: Always
         livenessProbe:
@@ -68,6 +68,12 @@ spec:
           preStop:
             exec:
               command: ["sh", "-c", "sleep 10"]
+        resources:
+          limits:
+            memory: 1Gi
+          requests:
+            cpu: 2000m
+            memory: 1Gi
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: kubernetes

@@ -1,14 +1,8 @@
-#==================================================
-#      CHART OPTIONS (safe to change)
-#==================================================
-tags:
-  include-observability: false
-  include-log-streaming: false
-  include-request-tracing: true
+# Default values for spring-petclinic-cloud.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
 
-#==================================================
-#      DEPENDENCY CONFIGURATIONS (danger zone)
-#==================================================
+#Dependencies
 vets-db-mysql:
   primary:
     persistence:
@@ -38,7 +32,7 @@ customers-db-mysql:
   image:
     tag: 8.0.25
   fullnameOverride: "customers-db-mysql"
-    
+
 grafana:
   sidecar:
     dashboards:
@@ -83,10 +77,16 @@ fluent-bit:
         Flush 1
         Daemon Off
         Log_Level info
+  #      Parsers_File parsers.conf
+  #      Parsers_File custom_parsers.conf
+  #      HTTP_Server On
+  #      HTTP_Listen 0.0.0.0
+  #      HTTP_Port {{ .Values.service.port }}
 
     inputs: |
       [INPUT]
         Name stdin
+  #      Tag spring.petclinic
   
     outputs: |
       [OUTPUT]
@@ -94,7 +94,7 @@ fluent-bit:
 
       [OUTPUT]
         Name es
-        Host http://elasticsearch.{{ .Release.Namespace }}.svc.cluster.local:9200
+        Host http://elasticsearch.spring-petclinic.svc.cluster.local:9200
         Logstash_Format On
         Retry_Limit False
 
@@ -110,10 +110,40 @@ kibana:
     type: NodePort
     port: 5601
     nodePort: 30056
-  elasticsearchHosts: http://elasticsearch.{{ .Release.Namespace }}.svc.cluster.local:9200
+  elasticsearchHosts: http://elasticsearch.spring-petclinic.svc.cluster.local:9200
 
 zipkin:
   fullnameOverride: zipkin
   collector:
     service:
       type: NodePort
+
+#Values
+adminServer:
+  image: platform9community/admin-server
+  tag: latest
+
+apiGateway:
+  image: platform9community/api-gateway
+  tag: latest
+
+visitsService:
+  image: platform9community/visits-service
+  tag: latest
+  dbInstanceName: visits-db-mysql
+  dbName: service_instance_db
+  zipkinServiceName: visits-db
+
+vetsService:
+  image: platform9community/vets-service
+  tag: latest
+  dbInstanceName: vets-db-mysql
+  dbName: service_instance_db
+  zipkinServiceName: vets-db
+
+customersService:
+  image: platform9community/customers-service
+  tag: latest
+  dbInstanceName: customers-db-mysql
+  dbName: service_instance_db
+  zipkinServiceName: customers-db

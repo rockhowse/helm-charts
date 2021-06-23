@@ -3,27 +3,28 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: visits-service
-  name: visits-service
+    app: customers-service
+  name: customers-service
 spec:
   ports:
   - name: "8080"
     port: 8080
     targetPort: 8080
   selector:
-    app: visits-service
+    app: customers-service
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  annotations:
   labels:
-    app: visits-service
-  name: visits-service
+    app: customers-service
+  name: customers-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: visits-service
+      app: customers-service
   strategy: {}
   template:
     metadata:
@@ -32,11 +33,11 @@ spec:
         prometheus.io/path: /actuator/prometheus
         prometheus.io/port: "8080"
       labels:
-        app: visits-service
+        app: customers-service
     spec:
       containers:
-      - image: platform9community/visits-service:latest
-        name: visits-service
+      - image: {{ .Values.customersService.image }}:{{ .Values.customersService.tag }}
+        name: customers-service
         imagePullPolicy: Always
         livenessProbe:
           httpGet:
@@ -53,17 +54,23 @@ spec:
           preStop:
             exec:
               command: ["sh", "-c", "sleep 10"]
+        resources:
+          limits:
+            memory: 1Gi
+          requests:
+            cpu: 2000m
+            memory: 1Gi
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: kubernetes
         - name: SPRING_DATASOURCE_URL
-          value: jdbc:mysql://visits-db-mysql.spring-petclinic.svc.cluster.local:3306/service_instance_db?queryInterceptors=brave.mysql8.TracingQueryInterceptor&exceptionInterceptors=brave.mysql8.TracingExceptionInterceptor&zipkinServiceName=visits-db
+          value: jdbc:mysql://{{ .Values.customersService.dbInstanceName }}.{{ ..Release.Namespace }}.svc.cluster.local:3306/{{ .Values.customersService.dbName }}?queryInterceptors=brave.mysql8.TracingQueryInterceptor&exceptionInterceptors=brave.mysql8.TracingExceptionInterceptor&zipkinServiceName={{ .Values.customersService.zipkinServiceName }}
         - name: SPRING_DATASOURCE_USERNAME
           value: root
         - name: SPRING_DATASOURCE_PASSWORD
           valueFrom:
              secretKeyRef:
-               name: visits-db-mysql
+               name: {{ .Values.customersService.dbInstanceName }}
                key: mysql-root-password
         ports:
         - containerPort: 8080
