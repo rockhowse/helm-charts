@@ -4,7 +4,7 @@
 tags:
   include-observability: false
   include-log-streaming: false
-  include-request-tracing: true
+  include-request-tracing: false
 
 #==================================================
 #      DEPENDENCY CONFIGURATIONS (danger zone)
@@ -38,7 +38,7 @@ customers-db-mysql:
   image:
     tag: 8.0.25
   fullnameOverride: "customers-db-mysql"
-    
+
 grafana:
   sidecar:
     dashboards:

@@ -3,7 +3,75 @@ entries:
   spring-petclinic-cloud:
   - apiVersion: v2
     appVersion: 2.3.1
-    created: "2021-06-17T13:00:07.8522928-04:00"
+    created: "2021-06-23T14:37:34.7059983-04:00"
+    dependencies:
+    - alias: vets-db-mysql
+      name: mysql
+      repository: '@bitnami'
+      version: 8.5.9
+    - alias: visits-db-mysql
+      name: mysql
+      repository: '@bitnami'
+      version: 8.5.9
+    - alias: customers-db-mysql
+      name: mysql
+      repository: '@bitnami'
+      version: 8.5.9
+    - condition: somechart.enabled
+      name: prometheus
+      repository: '@prometheus-community'
+      tags:
+      - include-observability
+      version: 14.1.0
+    - name: grafana
+      repository: '@grafana'
+      tags:
+      - include-observability
+      version: 6.9.0
+    - name: zipkin
+      repository: '@carlosjgp'
+      tags:
+      - include-request-tracing
+      version: 0.2.0
+    - name: fluent-bit
+      repository: '@fluent'
+      tags:
+      - include-log-streaming
+      version: 0.15.13
+    - name: elasticsearch
+      repository: '@elastic'
+      tags:
+      - include-log-streaming
+      version: 7.13.0
+    - name: kibana
+      repository: '@elastic'
+      tags:
+      - include-log-streaming
+      version: 7.13.0
+    description: Spring pet clinic for Kubernetes on Platform9
+    digest: 09a640fdbdc002e8d162d6c2701c9883ab5d9f36d6005dd910c009568586149c
+    home: https://platform9-community.github.io/helm-charts/spring-petclinic-cloud
+    icon: https://platform9-community.github.io/helm-charts/spring-petclinic-cloud/spring-cloud.png
+    keywords:
+    - spring
+    - java
+    - spring cloud
+    - kubernetes
+    - platform9
+    kubeVersion: '>= 1.18.10 <= 1.20.5'
+    maintainers:
+    - email: ddieruf@platform9.com
+      name: David Dieruf
+    name: spring-petclinic-cloud
+    sources:
+    - https://github.com/platform9-community/spring-petclinic-cloud
+    type: application
+    urls:
+    - https://platform9-community.github.io/helm-charts/spring-petclinic-cloud-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
+    appVersion: 2.3.1
+    created: "2021-06-23T14:37:34.6919994-04:00"
     dependencies:
     - name: mysql
       repository: '@bitnami'
@@ -60,4 +128,4 @@ entries:
     urls:
     - https://platform9-community.github.io/helm-charts/spring-petclinic-cloud-0.1.0.tgz
     version: 0.1.0
-generated: "2021-06-17T13:00:07.839293-04:00"
+generated: "2021-06-23T14:37:34.6699861-04:00"

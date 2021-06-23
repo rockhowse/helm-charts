@@ -64,7 +64,7 @@ There is an instance of spring admin running where you can see each service's es
 Please note if you are running this chart on a local cluster, it will need a higher amount of compute than normal. This was tested using minikube with the following start command. It took everything a few minutes for the deployments to completely finish and go "green". None of the object deployed make resource claims.
 
 ```bash
-minikube start --cpus=4 --memory='5000MB'
+minikube start --cpus=6 --memory='10000MB'
 ```
 
 ## Running in public cloud
