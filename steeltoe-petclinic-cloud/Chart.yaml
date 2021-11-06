@@ -74,4 +74,4 @@ maintainers:
 
 icon: https://platform9-community.github.io/helm-charts/steeltoe-petclinic-cloud/steeltoe.png
 
-kubeVersion: ">= 1.18.10 <= 1.20.5"
+kubeVersion: ">= 1.18.10"
